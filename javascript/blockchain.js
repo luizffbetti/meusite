@@ -32,6 +32,37 @@ function registrarMudancaStatus() {
     }
 }
 
+function encerrarContrato()
+{
+    var textoEncerrar = document.getElementById("encerrarContratoTx");
+
+    textoEncerrar.innerHTML="conectando para encerramento de contrato ...";
+    contrato.fimDoContrato()
+    .then( (transacao)=>
+    {
+            console.log("encerrarContrato - Transacao", transacao);
+            textoEncerrar.innerHTML="aguarde encerrando o contrato ...";
+        
+            transacao.wait()
+            .then((resultado)=>
+            {
+                buscaFimContrato();
+            })
+            .catch((err) =>
+            {
+                console.error("encerrarContrato - Aguardando tx ser minerada");
+                console.error(err);
+                textoEncerrar.innerHTML="erro ao se conectar ...";
+            })
+     })
+     .catch((err)=>
+     {
+            console.error("encerrarContrato - Aguardando tx ser minerada");
+            console.error(err);
+            textoEncerrar.innerHTML="erro ao se conectar ...";
+     })
+}
+
 function buscaStatusContrato() {
     var status;
     var campoStatus = document.getElementById("campoStatus");     
